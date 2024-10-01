@@ -15,28 +15,40 @@ public class WorkdayFaker {
     return array[random];
     }
 
+    private static String removeSeparators(String content) {
+        String toRemove = "[\\(\\)\\s\\-]";
+        String parsedContent = content.replaceAll(toRemove, "");
+        return parsedContent;
+    }
+
     public static String getFirstName() {
-        return faker.name().name();
+        return faker.name().firstName();
     }
 
     public static String getLastName() {
-        return faker.name().name();
+        return faker.name().lastName();
     }
 
     public static String getPhoneNumber() {
-        return faker.phoneNumber().phoneNumber();
+        String rawPhoneNumber = faker.phoneNumber().phoneNumber();
+        String parsedPhoneNumber = removeSeparators(rawPhoneNumber);
+        Boolean[] booleans = {false, true};
+        if(getRandom(booleans)) {
+            parsedPhoneNumber = parsedPhoneNumber.substring(0, 2) + "9" + parsedPhoneNumber.substring(2, 10);
+        }
+        return parsedPhoneNumber;
     }
 
     public static String getEmailAddress() {
-        return faker.internet().safeEmailAddress();
+        return faker.internet().emailAddress();
     }
 
     public static String getAddressLine1() {
-        return faker.address().streetAddress();
+        return faker.address().streetName();
     }
 
     public static String getAddressLine2() {
-        return faker.address().buildingNumber();
+        return faker.address().secondaryAddress();
     }
 
     public static String getCity() {
@@ -44,11 +56,13 @@ public class WorkdayFaker {
     }
 
     public static String getCountryRegion() {
-        return faker.address().state();
+        return "BRA-" + faker.address().stateAbbr();
     }
 
     public static String getPostalCode() {
-        return faker.address().zipCode();
+        String rawPostalCode = faker.address().zipCode();
+        String parsedPostalCode = removeSeparators(rawPostalCode);
+        return parsedPostalCode;
     }
 
     public static String getGender() {

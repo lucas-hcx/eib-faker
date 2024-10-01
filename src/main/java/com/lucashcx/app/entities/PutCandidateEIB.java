@@ -14,7 +14,7 @@ import com.lucashcx.app.services.SpreadSheet;
 
 public class PutCandidateEIB {
     static final int headerRowNumber = 4;
-    static final int rowQuantity = 10;
+    static final int rowQuantity = 500;
     static final String variableARGB = "FFFFFF00";
     static final String fixedARGB = "FF70AD47";
     static final List<String> headersNames = List.of(
@@ -64,7 +64,7 @@ public class PutCandidateEIB {
         for(int i = headerRowNumber + 2; i <= lastRowNumber; i++) {
             Iterator<Cell> firstRowIterator = firstRow.cellIterator();
             Row row = SpreadSheet.createRow(sheet, i);
-            Map<String, String> fakeValues = (new PutCandidateEIBRow()).getFakeValues();
+            Map<String, Object> fakeValues = (new PutCandidateEIBRow()).getFakeValues();
             while(firstRowIterator.hasNext()) {
                 Cell firstRowCell = firstRowIterator.next();
                 int columnIndex = firstRowCell.getColumnIndex();
@@ -72,7 +72,7 @@ public class PutCandidateEIB {
                 Cell headerCell = headers.getCell(columnIndex);
                 if(firstRowCellColor.isPresent() && firstRowCellColor.get().equals(variableARGB)) {
                     Cell cell = SpreadSheet.createCellOnRow(row, columnIndex);
-                    SpreadSheet.setStringCell(cell, fakeValues.get(headerCell.getStringCellValue()));
+                    SpreadSheet.setCell(cell, fakeValues.get(headerCell.getStringCellValue()));
                 }
                 if(firstRowCellColor.isPresent() && firstRowCellColor.get().equals(fixedARGB)) {
                     Cell cell = SpreadSheet.createCellOnRow(row, columnIndex);

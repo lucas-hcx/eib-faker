@@ -1,7 +1,6 @@
 package com.lucashcx.app.services;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
@@ -34,11 +33,21 @@ public class SpreadSheet {
         return row.createCell(index);
     }
 
+    public static void setCell(Cell cell, Object content) {
+        if(content instanceof String) {
+            setStringCell(cell, (String) content);
+        } else if (content instanceof Long) {
+            setNumericCell(cell, (Long) content);
+        } else {
+            System.out.println("Tipo de célula não suportado.");
+        }
+    }
+
     public static void setStringCell(Cell cell, String content) {
         cell.setCellValue(content);
     }
 
-    public static void setNumericCell(Cell cell, double content) {
+    public static void setNumericCell(Cell cell, Long content) {
         cell.setCellValue(content);
     }
 
