@@ -1,14 +1,23 @@
 package com.lucashcx.app.services;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
 import java.util.Date;
 import java.util.Locale;
 import java.util.Random;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.HashSet;
+import java.util.Set;
+
 import java.text.SimpleDateFormat;
 
 import com.github.javafaker.Faker;
 
 public class WorkdayFaker {
     private static Faker faker = new Faker(new Locale("pt-BR"));
+    private static Map<String, Set<Object>> uniqueValues = new HashMap<>();
 
     private static <T> T getRandom(T[] array) {
         int random = new Random().nextInt(array.length);
@@ -44,7 +53,7 @@ public class WorkdayFaker {
     }
 
     public static String getLastName() {
-        return faker.name().lastName();
+        return "TEST " + faker.name().lastName();
     }
 
     public static String getPhoneNumber() {
@@ -58,7 +67,7 @@ public class WorkdayFaker {
     }
 
     public static String getEmailAddress() {
-        return faker.internet().emailAddress();
+        return faker.name().username() + "@example.com";
     }
 
     public static String getAddressLine1() {
@@ -95,8 +104,29 @@ public class WorkdayFaker {
     }
 
     public static String getID() {
-        Long randomNumber = faker.number().randomNumber(9, false);
+        Long randomNumber;
+        do {
+            randomNumber = faker.number().randomNumber(9, false);
+        } while (randomNumber % 111_111_111L == 0L);
         Long cpfNumber = completeCPF(randomNumber);
         return String.format("%011d", cpfNumber);
     }
+
+    public static Object getUnique(String methodString) {
+        Object uniqueValue = null;
+        try {
+            Method methodObject = WorkdayFaker.class.getMethod(methodString);
+            if(!uniqueValues.containsKey(methodString)) {
+                uniqueValues.put(methodString, new HashSet<>());
+            }
+            do {
+                uniqueValue = methodObject.invoke(WorkdayFaker.class);
+            } while (uniqueValues.get(methodString).contains(uniqueValue));
+            uniqueValues.get(methodString).add(uniqueValue);
+        } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
+        return uniqueValue;
+    }
+    
 }

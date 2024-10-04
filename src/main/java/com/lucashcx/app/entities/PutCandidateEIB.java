@@ -14,7 +14,7 @@ import com.lucashcx.app.services.SpreadSheet;
 
 public class PutCandidateEIB {
     static final int headerRowNumber = 4;
-    static final int rowQuantity = 500;
+    static final int rowQuantity = 10000;
     static final String variableARGB = "FFFFFF00";
     static final String fixedARGB = "FF70AD47";
     static final List<String> headersNames = List.of(
@@ -76,10 +76,12 @@ public class PutCandidateEIB {
                 }
                 if(firstRowCellColor.isPresent() && firstRowCellColor.get().equals(fixedARGB)) {
                     Cell cell = SpreadSheet.createCellOnRow(row, columnIndex);
-                    SpreadSheet.copyCellContent(firstRowCell, cell);
+                    SpreadSheet.copyCellContentAsString(firstRowCell, cell);
                 }
             }
         }
+
+        SpreadSheet.excludeRow(sheet, firstRow);
 
         SpreadSheet.saveFile(sheet, "teste.xlsx");
         SpreadSheet.closeWorkbook(sheet);

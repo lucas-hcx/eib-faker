@@ -15,7 +15,10 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.ss.util.CellReference;
+import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFColor;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class SpreadSheet {
@@ -34,7 +37,7 @@ public class SpreadSheet {
     }
 
     public static void setCell(Cell cell, Object content) {
-        if(content instanceof String) {
+        if (content instanceof String) {
             setStringCell(cell, (String) content);
         } else if (content instanceof Long) {
             setNumericCell(cell, (Long) content);
@@ -157,4 +160,51 @@ public class SpreadSheet {
         }
     }
 
+    public static void copyCellContentAsString(Cell source, Cell target) {
+        switch (source.getCellType()) {
+            case STRING:
+                target.setCellValue(source.getStringCellValue());
+                break;
+            case NUMERIC:
+                target.setCellValue(String.valueOf(Double.valueOf(source.getNumericCellValue()).longValue()));
+                break;
+            case BOOLEAN:
+                target.setCellValue(String.valueOf(source.getBooleanCellValue()));
+                break;
+            case FORMULA:
+                target.setCellValue(source.getCellFormula());
+                break;
+            case BLANK:
+                target.setCellValue("");
+                break;
+            default:
+                System.out.println("Tipo de célula não suportado.");
+        }
+    }
+
+    public static void resolveShiftRowsBug(Sheet sheet) {
+        if (sheet instanceof XSSFSheet) {
+            XSSFSheet xSSFSheet = (XSSFSheet) sheet;
+            for (int r = xSSFSheet.getFirstRowNum(); r < sheet.getLastRowNum() + 1; r++) {
+                XSSFRow row = xSSFSheet.getRow(r);
+                if (row != null) {
+                    long rRef = row.getCTRow().getR();
+                    for (Cell cell : row) {
+                        String cRef = ((XSSFCell) cell).getCTCell().getR();
+                        ((XSSFCell) cell).getCTCell().setR(cRef.replaceAll("[0-9]", "") + rRef);
+                    }
+                }
+            }
+        }
+    }
+
+    public static void excludeRow(Sheet sheet, Row row) {
+        int rowNumber = row.getRowNum();
+        int lastRowNumber = sheet.getLastRowNum();
+
+        sheet.removeRow(row);
+        sheet.shiftRows(rowNumber + 1, lastRowNumber, -1);
+
+        resolveShiftRowsBug(sheet);        
+    }
 }
