@@ -18,6 +18,7 @@ import com.github.javafaker.Faker;
 public class WorkdayFaker {
     private static Faker faker = new Faker(new Locale("pt-BR"));
     private static Map<String, Set<Object>> uniqueValues = new HashMap<>();
+    private static String staticRandom = String.format("%04d", faker.number().randomNumber(4, false));
 
     private static <T> T getRandom(T[] array) {
         int random = new Random().nextInt(array.length);
@@ -110,6 +111,14 @@ public class WorkdayFaker {
         } while (randomNumber % 111_111_111L == 0L);
         Long cpfNumber = completeCPF(randomNumber);
         return String.format("%011d", cpfNumber);
+    }
+
+    public static String getOrganizationID() {
+        return "TestOrg" + staticRandom + "a" + String.format("%04d", faker.number().randomNumber(4, false));
+    }
+
+    public static String getOrganizationName() {
+        return "Test Organization " + staticRandom + " A " + String.format("%04d", faker.number().randomNumber(4, false));
     }
 
     public static Object getUnique(String methodString) {

@@ -5,7 +5,7 @@ import java.util.Map;
 
 import com.lucashcx.app.services.WorkdayFaker;
 
-public class PutCandidateEIBRow {
+public class PutCandidateEIBRow implements Fakeable {
     static Long spreadSheetKey = 0L;
     private Map<String, Object> fakeValues = new HashMap<>();
 
