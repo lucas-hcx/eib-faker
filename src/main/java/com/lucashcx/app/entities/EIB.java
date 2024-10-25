@@ -18,8 +18,12 @@ public class EIB {
         String fixedARGB = eib.getFixedARGB();
         String inputfilePath = eib.getInputfilePath();
         String outputfilePath = eib.getOutputfilePath();
+        Optional<String> sheetName = eib.getSheetName();
 
-        Sheet sheet = SpreadSheet.openSingleWorkbookFile(inputfilePath).get();
+        Sheet sheet = sheetName.isPresent() ?
+            SpreadSheet.openSheetFromWorkbookFile(inputfilePath, sheetName.get()).get() :
+            SpreadSheet.openSingleWorkbookFile(inputfilePath).get();
+
         Row headers = SpreadSheet.getRow(sheet, headerRowNumber);
         Row firstRow = SpreadSheet.getRow(sheet, headerRowNumber + 1);
         int lastRowNumber = headerRowNumber + rowQuantity + 1;

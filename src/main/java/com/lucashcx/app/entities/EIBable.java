@@ -1,8 +1,11 @@
 package com.lucashcx.app.entities;
 
 import java.util.Map;
+import java.util.Optional;
 
 public interface EIBable {
+    public Optional<String> getSheetName();
+
     public int getHeaderRowNumber();
 
     public int getRowQuantity();

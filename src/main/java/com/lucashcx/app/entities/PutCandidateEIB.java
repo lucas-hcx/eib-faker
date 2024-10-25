@@ -1,10 +1,11 @@
 package com.lucashcx.app.entities;
 
 import java.util.Map;
+import java.util.Optional;
 
 import com.lucashcx.app.models.PutCandidateEIBRow;
 
-public class PutCandidateEIB implements EIBable{
+public class PutCandidateEIB implements EIBable {
     public static final int headerRowNumber = 4;
     public static final int rowQuantity = 1;
     public static final String variableARGB = "FFFFFF00";
@@ -18,7 +19,11 @@ public class PutCandidateEIB implements EIBable{
 
     public void run() {
         EIB.populateEIB(this);
-    } 
+    }
+
+    public Optional<String> getSheetName() {
+        return Optional.empty();
+    }
 
     public int getHeaderRowNumber() {
         return headerRowNumber;
@@ -32,7 +37,7 @@ public class PutCandidateEIB implements EIBable{
         return variableARGB;
     }
 
-    public String getFixedARGB(){
+    public String getFixedARGB() {
         return fixedARGB;
     }
 
@@ -42,5 +47,5 @@ public class PutCandidateEIB implements EIBable{
 
     public String getOutputfilePath() {
         return outputfilePath;
-    }    
+    }
 }

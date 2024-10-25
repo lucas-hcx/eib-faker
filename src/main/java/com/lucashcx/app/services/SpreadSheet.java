@@ -3,7 +3,7 @@ package com.lucashcx.app.services;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-
+import java.lang.StackWalker.Option;
 import java.util.List;
 import java.util.Optional;
 import java.util.Iterator;
@@ -117,6 +117,21 @@ public class SpreadSheet {
         }
         return sheet;
     }
+
+    public static Optional<Sheet> openSheetFromWorkbookFile(String filePath, String sheetName) {
+        Optional<Sheet> sheet = Optional.empty();
+        try (FileInputStream fileIn = new FileInputStream(filePath)) {
+            Workbook workbook = WorkbookFactory.create(fileIn);
+            sheet = Optional.ofNullable(workbook.getSheet(sheetName));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return sheet;
+    }
+
+    public Optional<String> getSheetName() {
+        return Optional.empty();
+      }
 
     public static Row getRow(Sheet sheet, int index) {
         return sheet.getRow(index);
