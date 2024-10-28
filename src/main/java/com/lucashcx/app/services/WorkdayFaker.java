@@ -121,6 +121,10 @@ public class WorkdayFaker {
         return "Test Organization " + staticRandom + " A " + String.format("%04d", faker.number().randomNumber(4, false));
     }
 
+    public static String getJobName() {
+        return faker.job().title();
+    }
+
     public static Object getUnique(String methodString) {
         Object uniqueValue = null;
         try {
