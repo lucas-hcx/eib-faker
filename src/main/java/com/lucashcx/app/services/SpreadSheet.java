@@ -3,7 +3,6 @@ package com.lucashcx.app.services;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.lang.StackWalker.Option;
 import java.util.List;
 import java.util.Optional;
 import java.util.Iterator;

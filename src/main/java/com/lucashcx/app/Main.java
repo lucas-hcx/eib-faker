@@ -1,6 +1,7 @@
 package com.lucashcx.app;
 
 import com.lucashcx.app.entities.AddUpdateOrganizationEIB;
+import com.lucashcx.app.entities.ChangeJobEIB;
 import com.lucashcx.app.entities.ChangePersonalInformationEIB;
 import com.lucashcx.app.entities.CreatePositionEIB;
 import com.lucashcx.app.entities.PutCandidateEIB;
@@ -24,6 +25,9 @@ public class Main {
                 break;
             case "CreatePosition":
                 (new CreatePositionEIB()).run();
+                break;
+            case "ChangeJob":
+                (new ChangeJobEIB()).run();
                 break;
             default:
                 System.out.println("No EIB found for name given.");
